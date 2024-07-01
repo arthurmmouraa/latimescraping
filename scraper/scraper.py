@@ -129,11 +129,19 @@ class NewsScraper:
             return
 
         try:
-            newest_option = WebDriverWait(self.browser.driver, 20).until(
+            # Wait for the "Select" Menu to be located
+            WebDriverWait(self.browser.driver, 20).until(
+                EC.visibility_of_element_located((By.CSS_SELECTOR, ".select-input"))
+            )
+            
+            # Wait for "Newest" option to be located
+            WebDriverWait(self.browser.driver, 20).until(
                 EC.visibility_of_element_located(
                     (By.CSS_SELECTOR, "select.select-input option[value='1']")
                 )
             )
+
+            # Select "Newest"
             self.browser.select_from_list_by_value("css:.select-input", "1")
             logger.info("'Newest' option selected")
         except Exception as e:
@@ -151,10 +159,7 @@ class NewsScraper:
                 'xpath://p[@class="promo-description"]'
             )
             image_elements = self.browser.find_elements('xpath://img[@class="image"]')
-
-            for date_element, title_element, description_element, image_element in zip(
-                date_elements, title_elements, description_elements, image_elements
-            ):
+            for date_element, title_element, description_element, image_element in zip(date_elements, title_elements, description_elements, image_elements):
                 date_text = convert_abbreviated_date(date_element.text.strip())
                 title_text = title_element.text.strip()
                 description_text = description_element.text.strip()
