@@ -23,6 +23,14 @@ Before starting the scraping process, it's necessary to configure some variables
 - CATEGORY: Category to filter the posts.
 - MONTHS: Number of months of posts to consider (0 or 1 - only the current month, 2 - current and previous month, 3 - current and two previous months, and so on)
 
+By default, the configuration file comes pre-set with the following values:
+
+> SEARCH_PHRASE: "Brazil"
+> CATEGORY: "World & Nation"
+> MONTHS: 0
+
+Ensure these variables are configured according to your specific scraping requirements before proceeding.
+
 ## Running the Project
 
 To start the scraping process, execute the main.py file:
