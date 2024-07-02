@@ -1,5 +1,6 @@
 import datetime
 import os
+import time
 
 from loguru import logger
 from openpyxl import Workbook
@@ -212,13 +213,15 @@ class NewsScraper:
             logger.info("'Newest' option selected")
         except Exception as e:
             logger.error("Error selecting the 'Newest' option: {}", e)
+            
+        time.sleep(5)
 
         all_data = []
         postagem_anterior_ao_limite = False
 
         while True:
             date_elements = self.browser.find_elements(
-                'xpath://p[@class="promo-timestamp"]'
+                "xpath://p[@class='promo-timestamp']"
             )
             title_elements = self.browser.find_elements("xpath://h3/a")
             description_elements = self.browser.find_elements(
@@ -226,7 +229,8 @@ class NewsScraper:
             )
             image_elements = self.browser.find_elements('xpath://img[@class="image"]')
             for date_element, title_element, description_element, image_element in zip(date_elements, title_elements, description_elements, image_elements):
-                date_text = convert_abbreviated_date(date_element.text.strip())
+                date_text = date_element.text.strip()
+                date_text = convert_abbreviated_date(date_text)
                 title_text = title_element.text.strip()
                 description_text = description_element.text.strip()
                 image_src = image_element.get_attribute("src")

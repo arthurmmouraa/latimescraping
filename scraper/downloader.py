@@ -35,7 +35,7 @@ def download_image(image_url, save_dir):
 
 def extract_image_filename(image_src):
     """
-    Extracts the filename from an image URL.
+    Extracts the filename from an image URL and ensures it ends with .png, .jpg, or .jpeg.
 
     Args:
         image_src (str): URL of the image.
@@ -47,5 +47,10 @@ def extract_image_filename(image_src):
     if image_src:
         img_filename = image_src.replace("%2F", "/")
         img_filename = img_filename.split("/")[-1]
+        
+        # Check if the filename ends with .png, .jpg, or .jpeg; if not, append .jpg
+        if not any(img_filename.lower().endswith(ext) for ext in ('.png', '.jpg', '.jpeg')):
+            img_filename += '.jpg'  # You can choose any of the supported extensions here
+        
         return img_filename
     return None
