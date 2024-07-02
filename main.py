@@ -6,6 +6,12 @@ from scraper.scraper import NewsScraper
 logger = configure_logger()
 
 if __name__ == "__main__":
+    """
+    Main entry point of the script.
+
+    Loads the configuration, initializes a NewsScraper instance with the loaded configuration,
+    and starts the scraping process.
+    """
     config = load_config()
     scraper = NewsScraper(config)
     scraper.scrape()
