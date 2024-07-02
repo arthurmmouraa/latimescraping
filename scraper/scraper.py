@@ -32,7 +32,7 @@ class NewsScraper:
         """
         self.config = config
         self.browser = Selenium(auto_close=False)
-        self.image_dir = "images"
+        self.image_dir = "output/images"
         os.makedirs(self.image_dir, exist_ok=True)
         logger.info("NewsScraper initialized with config: {}", config)
 
@@ -79,7 +79,7 @@ class NewsScraper:
         for row in data:
             ws.append(row)
 
-        wb.save("post_data.xlsx")
+        wb.save("output/post_data.xlsx")
         logger.info("Data saved in post_data.xlsx file")
 
     def scrape(self):
@@ -173,8 +173,7 @@ class NewsScraper:
             filters_section = WebDriverWait(self.browser.driver, 20).until(
                 EC.visibility_of_element_located(
                     (
-                        By.CSS_SELECTOR,
-                        "body > div.page-content > ps-search-results-module > form > div.search-results-module-ajax > ps-search-filters > div > aside > div > div.search-results-module-filters-content.SearchResultsModule-filters-content > div:nth-child(1) > ps-toggler",
+                       (By.CSS_SELECTOR, ".search-filter-menu")
                     )
                 )
             )
@@ -228,7 +227,8 @@ class NewsScraper:
                 'xpath://p[@class="promo-description"]'
             )
             image_elements = self.browser.find_elements('xpath://img[@class="image"]')
-            for date_element, title_element, description_element, image_element in zip(date_elements, title_elements, description_elements, image_elements):
+            for date_element, title_element, description_element, image_element in zip(
+                date_elements, title_elements, description_elements, image_elements):
                 date_text = date_element.text.strip()
                 date_text = convert_abbreviated_date(date_text)
                 title_text = title_element.text.strip()
