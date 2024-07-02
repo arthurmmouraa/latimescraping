@@ -292,4 +292,4 @@ class NewsScraper:
                 break
 
         self.browser.close_browser()
-        logger.info("Navegador fechado, raspagem concluída")
+        logger.info("Browser closed, scraping completed")
