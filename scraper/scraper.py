@@ -32,7 +32,7 @@ class NewsScraper:
         """
         self.config = config
         self.browser = Selenium(auto_close=False)
-        self.image_dir = "output/images"
+        self.image_dir = "output"
         os.makedirs(self.image_dir, exist_ok=True)
         logger.info("NewsScraper initialized with config: {}", config)
 
