@@ -1,11 +1,13 @@
 from config.config import load_config
 from config.logging_config import configure_logger
 from scraper.scraper import NewsScraper
+from robocorp.tasks import task
 
 # Configure logger
 logger = configure_logger()
 
-if __name__ == "__main__":
+@task
+def main():
     """
     Main entry point of the script.
 
@@ -15,3 +17,7 @@ if __name__ == "__main__":
     config = load_config()
     scraper = NewsScraper(config)
     scraper.scrape()
+
+
+if __name__ == "__main__":
+    main()
