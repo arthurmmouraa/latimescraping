@@ -8,6 +8,16 @@ load_dotenv()
 
 
 def load_config():
+    """
+    Loads configuration settings from a YAML file and environment variables.
+
+    Returns:
+        dict: Configuration dictionary containing loaded settings.
+
+    Raises:
+        FileNotFoundError: If the configuration file specified by CONFIG_PATH environment variable is not found.
+        yaml.YAMLError: If there is an error parsing the configuration file.
+    """
     config_path = os.getenv("CONFIG_PATH", "config/config.yaml")
 
     logger.info(f"Carregando arquivo de configuração de {config_path}")

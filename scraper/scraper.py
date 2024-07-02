@@ -13,6 +13,22 @@ from .utils import (calculate_date_limit, contains_money_amount,
 
 class NewsScraper:
     def __init__(self, config):
+        """
+        Initializes the NewsScraper object with the provided configuration.
+
+        Args:
+            config (dict): Configuration dictionary containing parameters for the scraper.
+
+        Attributes:
+            config (dict): Configuration dictionary stored as an instance attribute.
+            browser (Selenium): Selenium browser instance with auto close disabled.
+            image_dir (str): Directory path for storing images.
+        
+        Creates the image directory if it doesn't exist and logs initialization details.
+
+        Example:
+            scraper = NewsScraper(config)
+        """
         self.config = config
         self.browser = Selenium(auto_close=False)
         self.image_dir = "images"
@@ -20,6 +36,29 @@ class NewsScraper:
         logger.info("NewsScraper initialized with config: {}", config)
 
     def save_data_to_excel(self, data):
+        """
+        Save the provided data to an Excel file (.xlsx).
+
+        Args:
+            data (list): A list of lists where each inner list represents a data row.
+                Each row should contain the following fields in order:
+                    - Date (str): Date of the post.
+                    - Title (str): Title of the post.
+                    - Description (str): Description of the post.
+                    - Picture Filename (str): Filename of the image associated with the post.
+                    - Title Search Count (int): Count of search phrases in the post title.
+                    - Description Search Count (int): Count of search phrases in the post description.
+                    - Title Contains Money (bool): Whether the title contains references to money.
+                    - Description Contains Money (bool): Whether the description contains references to money.
+        Raises:
+            TypeError: If the data argument is not a valid list of lists as specified above.
+            OSError: If an error occurs while saving the Excel file.
+
+        Notes:
+            Uses the openpyxl library to create a new Excel file, adds the provided data as rows in the "Post Data" worksheet,
+            and saves the file with the name 'post_data.xlsx' in the current directory.
+            Logs the action using the system logger.
+        """
         wb = Workbook()
         ws = wb.active
         ws.title = "Post Data"
@@ -43,6 +82,33 @@ class NewsScraper:
         logger.info("Data saved in post_data.xlsx file")
 
     def scrape(self):
+        """
+        Performs web scraping of data from the 'Los Angeles Times' website based on the provided configurations.
+
+        This function performs the following steps:
+        1. Initiates navigation to the 'https://www.latimes.com' website.
+        2. Maximizes the browser window if possible, logging the action.
+        3. Clicks the search button and enters the configured search phrase.
+        4. Selects the "See All" option if available.
+        5. Loads and selects category filters as configured.
+        6. Selects the "Newest" sorting option.
+        7. Iterates through result pages, collecting dates, titles, descriptions, and images of posts.
+        8. Saves the collected data to an Excel file ('post_data.xlsx').
+        9. Stops scraping when it encounters a post earlier than the configured date limit.
+
+        Args:
+            None
+
+        Returns:
+            None
+
+        Raises:
+            Exception: If errors occur during any step of scraping, they are logged.
+
+        Notes:
+            Uses Selenium for browser interaction and other utility functions defined within the class context.
+            The date limit is calculated based on previously configured months.
+        """
         search_phrase = self.config["search_phrase"]
         category = self.config["category"]
         months = self.config["months"]
