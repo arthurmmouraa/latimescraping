@@ -27,7 +27,7 @@ By default, the configuration file comes pre-set with the following values:
 
 > SEARCH_PHRASE: "Brazil"
 > CATEGORY: "World & Nation"
-> MONTHS: 0
+> MONTHS: 1
 
 Ensure these variables are configured according to your specific scraping requirements before proceeding.
 
